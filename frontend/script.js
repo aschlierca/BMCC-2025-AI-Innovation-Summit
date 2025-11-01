@@ -1,14 +1,61 @@
-// 🌙 AURA Wellness Navigator — Intelligent Frontend
+// 🌙 AURA Wellness Navigator — Frontend-Only Edition
 // Author: Dhimy Jean | Dhimsoft Labs
-// Description: Collects user data, sends to backend, and visualizes AI-driven wellness recommendations.
+// Description: Runs all logic locally in the browser, no backend required.
 
-// 🔗 Backend base URL (auto-switch between local and deployed)
-const API_BASE_URL =
-  window.location.hostname === "localhost"
-    ? "http://localhost:5001/api" // ✅ Correct port
-    : "https://aura-backend.vercel.app/api";
+// 🧠 Generate Recommendation (pure frontend logic)
+function generateRecommendation(hour, class_hours, work_hours, commute, sleep, stress, mood) {
+  hour = parseInt(hour);
+  class_hours = parseInt(class_hours);
+  work_hours = parseInt(work_hours);
+  commute = parseInt(commute);
+  sleep = parseInt(sleep);
+  stress = parseInt(stress);
+  mood = mood ? mood.toLowerCase() : "neutral";
 
-// 🧠 Collect inputs & send to backend
+  const totalWorkload = class_hours + work_hours + commute;
+  const fatigue = stress * 2 + totalWorkload - sleep;
+  const focus = Math.max(0, 10 - fatigue);
+  const timeOfDay = hour < 12 ? "morning" : hour < 18 ? "afternoon" : "evening";
+
+  const tips = [];
+
+  // 💤 Sleep
+  if (sleep < 6) tips.push("😴 You seem sleep-deprived — aim for at least 7 hours tonight.");
+  else if (sleep > 9) tips.push("🌅 Too much rest may cause sluggishness — try waking up earlier.");
+
+  // 📘 Workload
+  if (totalWorkload >= 8)
+    tips.push("📘 Heavy schedule — divide study and work into 45-min focus blocks.");
+  else if (totalWorkload <= 3)
+    tips.push("🪄 Light day — use free time for reflection or creative projects.");
+
+  // 😤 Stress
+  if (stress >= 4)
+    tips.push("🧘 High stress detected. Try a 5-minute breathing or stretching break.");
+  else if (stress <= 2)
+    tips.push("🌿 Balanced mindset — keep your calm rhythm going!");
+
+  // 😊 Mood
+  if (mood.includes("tired") || mood.includes("sad"))
+    tips.push("🎧 Listen to uplifting music or take a short walk outside.");
+  else if (mood.includes("happy"))
+    tips.push("⚡ Great energy! Channel it toward your most creative goals today.");
+  else tips.push("🔄 Neutral mood — perfect for consistent, steady progress.");
+
+  // ☀️ Time-of-day insights
+  if (timeOfDay === "morning")
+    tips.push("🌞 Start your morning with hydration and light stretching.");
+  else if (timeOfDay === "afternoon")
+    tips.push("☕ Afternoon slump incoming — move around for 2 minutes to recharge.");
+  else tips.push("🌙 Evening time — slow down, reflect, and plan for tomorrow.");
+
+  const selectedTips = tips.sort(() => 0.5 - Math.random()).slice(0, 3);
+  const recommendation = selectedTips.join(" ");
+
+  return { recommendation, focus };
+}
+
+// 🧭 Handle form + display results
 async function getRecommendation() {
   const hour = new Date().getHours();
   const class_hours = document.getElementById("classHours").value;
@@ -19,43 +66,18 @@ async function getRecommendation() {
   const mood = document.getElementById("mood").value;
   const resultBox = document.getElementById("result");
 
-  // Loading state
   resultBox.innerHTML = `<p class="thinking">⏳ Analyzing your inputs...</p>`;
 
-  try {
-    const response = await fetch(`${API_BASE_URL}/recommend`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        hour,
-        class_hours,
-        work_hours,
-        commute,
-        sleep,
-        stress,
-        mood,
-      }),
-    });
+  // Simulate delay for realism
+  setTimeout(() => {
+    const data = generateRecommendation(hour, class_hours, work_hours, commute, sleep, stress, mood);
 
-    const data = await response.json();
-
-    if (!response.ok || data.status !== "success") {
-      throw new Error(data.message || "Unexpected server error.");
-    }
-
-    // ✅ Display recommendation
     resultBox.innerHTML = `<p class="tip success fade-in">🌿 ${data.recommendation}</p>`;
-
-    // Update chart
     updateFocusChart(class_hours, work_hours, commute, sleep, stress);
-
-  } catch (error) {
-    console.error("Error fetching recommendation:", error);
-    resultBox.innerHTML = `<p class="error fade-in">🚫 Unable to connect to AURA backend. Please ensure the server is running.</p>`;
-  }
+  }, 500);
 }
 
-// 📊 Focus-Energy Curve
+// 📊 Focus-Energy Curve (local chart only)
 function updateFocusChart(class_hours, work_hours, commute, sleep, stress) {
   const ctx = document.getElementById("focusChart");
   if (!ctx) return;
