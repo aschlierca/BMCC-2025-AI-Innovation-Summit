@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "bmcc-ai-innovation-summit",
+  "private_key_id": "8c7a2a573e305706b95ab9cf0efbcdc14ded07dd",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC2C4bsmnkmc9+b\nDgTJ25imtIq24ZNILlSADNgFJFWRb9IMLAvsc+Uvm5srZi0SabnUNbiklKolnvxa\ns+9BWZxVXL0Shba+k+6XFFzUa2vLFpDQPbgTy/D2FVd5kmNEgnlopaaN9c3kzhYT\nlD2U33I5oVBxBOC6AEB4PUHGw2EEcyvZp2ZzlQkj5JcIbRlWDftV7oWzgTaJUi5E\nDSDoQOjvhlABaCJ8VW94Tyzx28kpBBU1vy3JHCg1NID/AD3llcXoNLPafXIofRH1\nDw3L68TjREA8SQIqJSBskBL1KGXeaH+27HL17XlaV4RlLnvgB4fcREyErZ/8wMJT\n65Xr9ck3AgMBAAECggEAR/V3gHgxMmd0OHTKpMYGacMM3+x7zPjvUuyAyUuK/WG/\nnCsfDXjkW7S9GeMaJuCe4YjYs0nGlfdp1iqxBNp4pu9xF2y+h0evdI3KgfbyVYVW\nedIjvMONPKDEApzAW3jdp+Vu2EeU+wARjuy2iO3oV2pyAzLD6BIoab8BDKH3bAu1\np1iTHhZ4SI2qbIJM4UgJav7oAPRb0Fz3qtNrf9kl3iwOoMYo39Rq7VLya6DX46RY\nOZLRX0GF16OcR3bPG2BNlTb0q5j8g+6Zz4HOehUSQz3f/6Da33xqXbZYz8tkWUPG\nNfjSW4/Fp1iqWQ3jd7vvvyG6gdHdqQE6zAxIghBXMQKBgQDip8mEDcBge3kYjWK/\nPxSFnnhg8FNqxkoLh8+avXLIrHmgcFe6WSCJdb/u28cQAwmglPxaWrTWFUiDkx2q\nZDQAWvX0L20Lea1ITZjXOfMNs7UcNIEsAJ7QubSFRCATGHuyS06ajp1uwjg7okzV\nANF2m81kL1soJ0cM4T1OZkP6ZwKBgQDNnS8L0mJnUUFuZpjfS1hmXVGotEr8JGv4\nEQrezUKRvA0jLb3SIz5Hakm2/Nq3HiO5c9Tvcjqfi0+Ou0qkwfZPO8go+JZdxSER\n/qo6RGbZDG1RJZ74IOKG/1pGpyIz++eUejoWZl9hlHo96JgTHS18KQtR8ARwgK7z\nTVNktyQYsQKBgQCbJTbvSWpxoJMXl1AMkOU/QWYtFNREtk5g7inRRfSYIFdw1vV1\n/SQkc5FZst7juvCQFutV/dji4datGbqos8ZUp+7LotsFi9htMZB5YpVYv7YtBFOX\nByWuwi8rOaKq74tcU+gOK6jf89oCF+p3swOuKJ/DABdpuNkNm/AXBjFp6QKBgGg7\noajlizsDBx93ZVH1OSgTcJ0MYOL3d8B2q0MNXQzR/vrxakQH17+OUzYvcpTX85ZE\n8RI9nxhYIAmkSo/BQCMklDCo7Fk24K/loNgO6vBnC1fSsYbp7Mww0Mv2WDFwJxKu\n75mBZiLqiRmvOsCdzvwdNn7gJO//XDE85uSsruDRAoGADKcfRzALFsc/yil1+0RV\nzgvowuFle8bjSHKsgk3Q5At2NfRGf0rcKsbEQlumsQzit67NSBI6oUuKz8XWTXlc\niHCjUlAS6H3aBzFen9+LEZMsYqAdenSrgoKBLA4XlC8CX5YKoGi3Ew+XA8gXgFuY\n6xADuBE76aMMnZBX6EZ/7jE=\n-----END PRIVATE KEY-----\n",
+  "client_email": "gemini-client@bmcc-ai-innovation-summit.iam.gserviceaccount.com",
+  "client_id": "105361490218624568026",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/gemini-client%40bmcc-ai-innovation-summit.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
