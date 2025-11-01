@@ -5,7 +5,7 @@
 
 ## 🧠 Overview
 AURA Wellness Navigator helps students balance their study, rest, and self-care through simple daily input tracking and AI-powered wellness tips.  
-It combines a **calm, interactive front-end** with a **Node.js + Gemini-powered backend**.
+It combines a **calm, interactive front-end** with a **Node.js + Gemini-powered backend** to deliver personalized wellness recommendations.
 
 ---
 
@@ -20,7 +20,8 @@ It combines a **calm, interactive front-end** with a **Node.js + Gemini-powered 
 ---
 
 ## 🚀 How to Run Locally
-### Backend
+
+### 1️⃣ Backend Setup
 ```bash
 cd backend
 npm install
