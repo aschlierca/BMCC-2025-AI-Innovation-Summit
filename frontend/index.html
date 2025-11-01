@@ -1,8 +1,0 @@
-<script>
-  async function fetchMessage() {
-    const res = await fetch('/api/message');
-    const data = await res.json();
-    document.body.innerHTML += `<p>${data.message}</p>`;
-  }
-  fetchMessage();
-</script>
