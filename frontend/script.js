@@ -76,20 +76,27 @@ async function getRecommendation() {
     updateFocusChart(class_hours, work_hours, commute, sleep, stress);
   }, 500);
 }
+// 📊 Focus-Energy Curve (dynamic updates)
+let focusChart = null;
 
-// 📊 Focus-Energy Curve (local chart only)
 function updateFocusChart(class_hours, work_hours, commute, sleep, stress) {
   const ctx = document.getElementById("focusChart");
   if (!ctx) return;
 
+  // Calculate base energy
   const baseEnergy =
     100 - stress * 10 + (sleep - 6) * 5 - class_hours * 3 - work_hours * 2 - commute * 1.5;
 
+  // Simulate energy curve points
   const points = Array.from({ length: 7 }, (_, i) =>
     Math.max(20, Math.min(100, baseEnergy - i * (Math.random() * 8)))
   );
 
-  new Chart(ctx, {
+  // Destroy previous chart instance if it exists
+  if (focusChart) focusChart.destroy();
+
+  // Create a new chart instance
+  focusChart = new Chart(ctx, {
     type: "line",
     data: {
       labels: ["8AM", "10AM", "12PM", "2PM", "4PM", "6PM", "8PM"],
@@ -107,7 +114,7 @@ function updateFocusChart(class_hours, work_hours, commute, sleep, stress) {
     },
     options: {
       responsive: true,
-      animation: { duration: 900, easing: "easeOutCubic" },
+      animation: { duration: 800, easing: "easeOutCubic" },
       scales: {
         y: {
           beginAtZero: true,
@@ -124,3 +131,123 @@ function updateFocusChart(class_hours, work_hours, commute, sleep, stress) {
     },
   });
 }
+
+
+
+// === 📅 Google Calendar Integration ===
+const CLIENT_ID = "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com";
+const SCOPES = "https://www.googleapis.com/auth/calendar.readonly";
+
+// Initialize gapi
+function initClient() {
+  gapi.load("client:auth2", async () => {
+    await gapi.client.init({
+      apiKey: "", // optional for demo
+      clientId: CLIENT_ID,
+      discoveryDocs: ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"],
+      scope: SCOPES,
+    });
+  });
+}
+
+// Sign in and load events
+async function connectCalendar() {
+  try {
+    await gapi.auth2.getAuthInstance().signIn();
+    const response = await gapi.client.calendar.events.list({
+      calendarId: "primary",
+      timeMin: new Date().toISOString(),
+      maxResults: 10,
+      singleEvents: true,
+      orderBy: "startTime",
+    });
+
+    const events = response.result.items;
+    if (!events.length) {
+      document.getElementById("calendarSummary").innerHTML = "No upcoming events found.";
+      return;
+    }
+
+    // 🧠 Simple AI-like insight (local logic)
+    const workload = events.length;
+    const busyHours = events.reduce((acc, e) => {
+      if (e.start?.dateTime && e.end?.dateTime) {
+        const start = new Date(e.start.dateTime);
+        const end = new Date(e.end.dateTime);
+        acc += (end - start) / (1000 * 60 * 60);
+      }
+      return acc;
+    }, 0);
+
+    let insight = "";
+    if (busyHours > 6) {
+      insight = "😓 Very packed day ahead — schedule a mid-afternoon recharge break.";
+    } else if (busyHours > 3) {
+      insight = "🧘 Balanced schedule — remember to hydrate and take short pauses.";
+    } else {
+      insight = "🌿 Light schedule — perfect time for personal learning or self-care.";
+    }
+
+    document.getElementById("calendarSummary").innerHTML = `
+      <h3>Upcoming Events (${workload})</h3>
+      <ul>${events.map(e => `<li>${e.summary} – ${new Date(e.start.dateTime).toLocaleTimeString()}</li>`).join("")}</ul>
+      <p class="tip">${insight}</p>
+    `;
+  } catch (err) {
+    console.error("Calendar error:", err);
+    document.getElementById("calendarSummary").innerHTML =
+      "⚠️ Could not access calendar. Please sign in again.";
+  }
+}
+
+document.getElementById("connectCalendar").addEventListener("click", connectCalendar);
+window.onload = initClient;
+
+// 🎛️ Automatically refresh chart on any input change
+const inputs = document.querySelectorAll("input, select");
+inputs.forEach(input => {
+  input.addEventListener("change", getRecommendation);
+});
+
+
+/* ============================================================
+ 👤 Google Sign-In (Frontend Only)
+============================================================ */
+
+function handleCredentialResponse(response) {
+  const data = decodeJwtResponse(response.credential);
+  document.getElementById("userInfo").innerHTML = `
+    <h3>Welcome, ${data.name}!</h3>
+    <p>${data.email}</p>
+    <img src="${data.picture}" alt="profile" width="80" style="border-radius:50%;">
+  `;
+}
+
+function decodeJwtResponse(token) {
+  const base64Url = token.split('.')[1];
+  const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+  const jsonPayload = decodeURIComponent(
+    atob(base64)
+      .split('')
+      .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+      .join('')
+  );
+  return JSON.parse(jsonPayload);
+}
+
+// ✅ Initialize Google button
+window.onload = function () {
+  google.accounts.id.initialize({
+    client_id: "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com",
+    callback: handleCredentialResponse,
+  });
+
+  google.accounts.id.renderButton(
+    document.getElementById("g_id_signin"),
+    { theme: "outline", size: "large", width: 250 }
+  );
+
+  google.accounts.id.prompt(); // Optional: auto-prompt
+};
+
+

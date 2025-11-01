@@ -228,3 +228,9 @@ footer {
   from { opacity: 0; transform: translateY(25px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+#userInfo {
+  margin-top: 1rem;
+  text-align: center;
+  color: #fff;
+}
